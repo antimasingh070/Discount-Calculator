@@ -60,6 +60,11 @@ class DiscountCalculator
     @total_price.round(2)
   end
 
+  # Calculates and returns the saved amount.
+  def calculate_saved_amount
+    (@invoice_amount_without_discount - @total_price).round(2)
+  end
+
   private
 
   # Convert items to quantity count hash
@@ -68,3 +73,13 @@ class DiscountCalculator
   end
 
 end
+
+# Create an instance of DiscountCalculator
+discount_calculator = DiscountCalculator.new
+
+# Get user input for purchased items
+discount_calculator.user_input
+
+# Display the calculated total price and savings
+puts "Total price : $" + discount_calculator.calculate_amount.to_s
+puts "You saved $" + discount_calculator.calculate_saved_amount.to_s + " today."
