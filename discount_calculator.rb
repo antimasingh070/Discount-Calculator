@@ -19,4 +19,11 @@ class DiscountCalculator
       milk: { quantity: 2, price: 5.00 },
       bread: { quantity: 3, price: 6.00 }
   }
+
+  # Get user input and convert to quantity count hash
+  def user_input
+    puts "Please enter all the items purchased separated by a comma -: \n"
+    @items = gets.split(' ').join.split(',')
+    @item_quantity_hash = @items.each_with_object(Hash.new(0)) { |item, total| total[item.to_sym] += 1 }
+  end
 end
