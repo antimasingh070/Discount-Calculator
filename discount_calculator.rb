@@ -24,6 +24,47 @@ class DiscountCalculator
   def user_input
     puts "Please enter all the items purchased separated by a comma -: \n"
     @items = gets.split(' ').join.split(',')
+    convert_item_to_quantity_count_hash
+  end
+  
+  # Calculate amount
+  def calculate_amount
+    # Display the header for the itemized list
+    puts "Item      Quantity      Price"
+    puts "--------------------------------------"
+
+     # Iterate through each item and its quantity
+    @item_quantity_hash.each do |item, quantity|
+        # Calculate the total price for the current item
+        @item_total_price = quantity * ITEM_UNIT_PRICES[item]
+    
+        # Check if there is a special offer for the current item
+        if OFFER_PRICES[item]
+            remainder = quantity % OFFER_PRICES[item][:quantity]
+            divider = quantity / OFFER_PRICES[item][:quantity]
+
+            # Calculate the total price with the offer
+            @total_price += @item_quantity_test = divider * OFFER_PRICES[item][:price] + remainder * ITEM_UNIT_PRICES[item]
+        else
+            # If no offer, use the regular item price
+            @total_price += @item_quantity_test = @item_total_price
+        end
+    
+        # Display the item, its quantity, and the calculated price
+        puts "#{'%-11s' % item.capitalize}#{'%-14s' % quantity}$#{@item_quantity_test}" 
+
+        # Update the total amount without discount 
+        @invoice_amount_without_discount += @item_total_price
+    end
+    
+    @total_price.round(2)
+  end
+
+  private
+
+  # Convert items to quantity count hash
+  def convert_item_to_quantity_count_hash
     @item_quantity_hash = @items.each_with_object(Hash.new(0)) { |item, total| total[item.to_sym] += 1 }
   end
+
 end
